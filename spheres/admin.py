@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import Activity, InterestGroup, Interest
-
-admin.site.register(InterestGroup)
+from .models import Activity, Interest
 
 
 @admin.register(Interest)

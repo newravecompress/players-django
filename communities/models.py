@@ -82,4 +82,4 @@ class Member(models.Model):
         verbose_name_plural = _('Участники')
 
     def __str__(self):
-        return self.user
+        return self.user.username

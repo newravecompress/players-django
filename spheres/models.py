@@ -13,7 +13,7 @@ class Activity(models.Model):
         return self.name
 
 
-class InterestGroup(models.Model):
+class Group(models.Model):
     name = models.CharField(max_length=250, help_text=_('Название'), verbose_name=_('Название'))
     is_active = models.BooleanField(default=True, help_text=_('Активность'), verbose_name=_('Активность'))
 
@@ -28,7 +28,7 @@ class InterestGroup(models.Model):
 class Interest(models.Model):
     name = models.CharField(max_length=250, help_text=_('Название'), verbose_name=_('Название'))
     is_active = models.BooleanField(default=True, help_text=_('Активность'), verbose_name=_('Активность'))
-    group = models.ForeignKey(InterestGroup, null=True, blank=True, on_delete=models.SET_NULL,
+    group = models.ForeignKey(Group, null=True, blank=True, on_delete=models.SET_NULL,
                               help_text=_('Группа интересов'), verbose_name=_('Группа интересов'))
     picture = models.ImageField(blank=True, upload_to=f'upload/images/interest/', help_text=_('Картинка'),
                                 verbose_name=_('Картинка'))
