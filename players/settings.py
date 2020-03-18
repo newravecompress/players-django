@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
-    'spheres.apps.SpheresConfig'
+    'spheres.apps.SpheresConfig',
+    'communities.apps.CommunitiesConfig',
+    'courses.apps.CoursesConfig',
+    'events.apps.EventsConfig',
+    'pages.apps.PagesConfig'
 ]
 
 MIDDLEWARE = [

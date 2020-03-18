@@ -30,7 +30,7 @@ class Interest(models.Model):
     is_active = models.BooleanField(default=True, help_text=_('Активность'), verbose_name=_('Активность'))
     group = models.ForeignKey(InterestGroup, null=True, blank=True, on_delete=models.SET_NULL,
                               help_text=_('Группа интересов'), verbose_name=_('Группа интересов'))
-    picture = models.ImageField(blank=True, upload_to='upload/images/%Y/%m/%d/', help_text=_('Картинка'),
+    picture = models.ImageField(blank=True, upload_to=f'upload/images/interest/', help_text=_('Картинка'),
                                 verbose_name=_('Картинка'))
 
     class Meta:
