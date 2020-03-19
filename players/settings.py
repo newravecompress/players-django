@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'communities.apps.CommunitiesConfig',
     'courses.apps.CoursesConfig',
     'events.apps.EventsConfig',
-    'pages.apps.PagesConfig'
+    'pages.apps.PagesConfig',
+    'profiles.apps.ProfilesConfig'
 ]
 
 MIDDLEWARE = [
