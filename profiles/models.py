@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Profile(models.Model):
     # user
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, help_text=_('Пользователь'),
+                                verbose_name=_('Пользователь'))
     # social links
     ok_link = models.CharField(max_length=100, blank=True, help_text=_('Ссылка на Одноклассники'),
                                verbose_name=_('Ссылка на Одноклассники'))
@@ -36,9 +39,19 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
 
 class Visibility(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, help_text=_('Профиль'),
+                                   verbose_name=_('Профиль'))
     about = models.BooleanField(default=True, help_text=_('О себе кратко'), verbose_name=_('О себе кратко'))
     details = models.BooleanField(default=True, help_text=_('О себе подробно'), verbose_name=_('О себе подробно'))
     faith = models.BooleanField(default=True, help_text=_('Во что я верю'), verbose_name=_('Во что я верю'))
