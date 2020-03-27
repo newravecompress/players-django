@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
@@ -32,6 +33,16 @@ class Profile(models.Model):
     practice = models.TextField(blank=True, help_text=_('Как я это реализую'), verbose_name=_('Как я это реализую'))
     hobby = models.TextField(blank=True, help_text=_('Хобби'), verbose_name=_('Хобби'))
 
+    # boolean
+    investor_quest = models.BooleanField(default=False, help_text=_('Готов выступить инвестором'),
+                                         verbose_name=_('Готов выступить инвестором'))
+    investor_search = models.BooleanField(default=False, help_text=_('В поисках инвестиций'),
+                                          verbose_name=_('В поисках инвестиций'))
+    business_quest = models.BooleanField(default=False, help_text=_('В поисках бизнес-партнера'),
+                                         verbose_name=_('В поисках бизнес-партнера'))
+    project_quest = models.BooleanField(default=False, help_text=_('Готов работать в проектах'),
+                                        verbose_name=_('Готов работать в проектах'))
+
     class Meta:
         verbose_name = _('Профиль')
         verbose_name_plural = _('Профили')
@@ -41,7 +52,9 @@ class Profile(models.Model):
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
-        if created:
+        try:
+            instance.profile.save()
+        except ObjectDoesNotExist:
             Profile.objects.create(user=instance)
 
     @receiver(post_save, sender=User)
@@ -62,3 +75,22 @@ class Visibility(models.Model):
     class Meta:
         verbose_name = _('Видимость полей')
         verbose_name_plural = _('Видимость полей')
+
+
+class Subscribe(models.Model):
+    user = models.OneToOneField(Profile, on_delete=models.CASCADE, help_text=_('Пользователь'),
+                                verbose_name=_('Пользователь'))
+    recommend_email = models.BooleanField(default=False, help_text=_('Рассылка рекомендаций Email'),
+                                          verbose_name=_('Рассылка рекомендаций Email'))
+    recommend_sms = models.BooleanField(default=False, help_text=_('Рассылка рекомендаций Sms'),
+                                        verbose_name=_('Рассылка рекомендаций Sms'))
+    system_email = models.BooleanField(default=False, help_text=_('Сервисные сообщения Email'),
+                                       verbose_name=_('Сервисные сообщения Email'))
+    system_sms = models.BooleanField(default=False, help_text=_('Сервисные сообщения Sms'),
+                                     verbose_name=_('Сервисные сообщения Sms'))
+    user_email = models.BooleanField(default=False, help_text=_('Сообщения пользователей Email'),
+                                     verbose_name=_('Сообщения пользователей Email'))
+    user_sms = models.BooleanField(default=False, help_text=_('Сообщения пользователей Sms'),
+                                   verbose_name=_('Сообщения пользователей Sms'))
+    news_email = models.BooleanField(default=False, help_text=_('Дайджест новостей Email'),
+                                     verbose_name=_('Дайджест новостей Email'))
